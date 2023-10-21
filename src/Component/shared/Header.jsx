@@ -1,33 +1,94 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from "../../assets/photo/logo1.png"
 import cart from "../../assets/photo/cart.png"
 import { ProductArray } from '../../App'
 import deletebtn from '../../assets/photo/deletebtn.jpeg'
+import { products } from '../data/Data';
 
 
 const style={
-	model:`bg-slate-800 w-[850px] h-5/6 justify-center text-center absolute z-999 top-auto left-1/4 right-1/4 overflow-auto touch-pan-y`,
-	carthead:`flex items-center justify-center text-3xl text-slate-100 font-bold mt-3 mb-3 border-b-4 border-slate-100`,
-	allitems:`w-[800px] bg-salte-800`,
-	cartprocontainer:`flex shadow-xl m-1.5 rounded-lg p-2.5 items-center justify-center w-[900px]`,
-	cartimgtitle:`flex w-[40%]  items-center`,
-	proimg:`w-[200px] mr-2.5`,
-	img:`max-w-[100%] max-h-[100%]`,
-	protitle:`text-[22px] text-white`,
+	model:`bg-slate-800 w-[570px] h-5/6 justify-center items-center text-center absolute z-999 top-auto left-1/4 right-1/4 overflow-y-auto touch-pan-y ml-7`,
+	carthead:`flex items-center justify-center text-3xl text-slate-100 font-bold mt-3 border-b-4 border-slate-100`,
+	allitems:`bg-salte-800`,
+	cartprocontainer:`flex shadow-xl rounded-lg items-center justify-center `,
+	cartimgtitle:`flex items-center mr-4`,
+	proimg:` w-[180px] mt-1 mr-2.5`,
+	img:`max-w-[100%] max-h-[100%] h-[80px]`,
+	protitle:`text-[15px] text-white `,
+	mrp:`flex m-0 p-1.5 `,
+	frate:`flex m-0  text-red-500 line-through `,
 	prodquantity:`flex justify-evenly bg-white pt-2.5 rounded-lg border-2 border-solid border-yellow-400 w-[120px]`,
 	btn:`border-2 border-solid border-yellow-400 bg-white bg-white text-yellow-400 w-[30px] h-[30px] rounded-3xl `,
 	prodprice:`w-[20%] flex justify-right text-[20px] text-lime-500 ml-[50px]`,
 	deletebtn:`w-[30px] h-[30px] border-none hover:w-[35px] h-[35px] rounded-3xl`,
+	price:`flex ml-1 p-0 flex-col`,
+    seleprice:`flex m-0 p-1.5`,
+    save:`flex m-0 p-1 `,
+    rate:`text-lime-500 ml-1.5 border-1 border-solid`,
+	prices:`flex flex-col`
 
 }
 export default function Header () {
+	// const allproduct=products;
+	// // let p=allproduct.product;
+    // let overaaltax=10/100;
+    // let overcommision=10/100;
+    // let extraforfun=10/100;
+    // let mrp=parseInt(allproduct.product.Price)
+    // mrp=mrp+overaaltax*mrp+overcommision*mrp+extraforfun*mrp
+    // const seleprice=mrp-extraforfun*mrp
+    // const Discount=mrp-seleprice
 	
 	const [selectedProduct,setSelectedProduct]=useContext(ProductArray);
 	console.log("head",selectedProduct);
 	const [visibleModal,setVisibleModal]=useState(false)
-	// const [visibleModal, setVisibleModal] = useState(false);
-	const removeFromCart=(id)=>{
-		const filterItem=selectedProduct.filter((prd)=>prd.ID !==id );
+
+	const [amount, setAmount] = useState({
+		amount: 0,
+		discount: 0,
+		totalAmount: 0,
+	});
+
+	useEffect(() => {
+		let amount = 0;
+		let discountAmount = 0;
+		let totalAmount = 0;
+		if (selectedProduct && selectedProduct.length > 0) {
+			selectedProduct.map((singleProduct)=>{
+				
+				amount += singleProduct.product.Price;
+				console.log('👌👌👌',amount)
+				if (singleProduct.product.discount) {
+					discountAmount += singleProduct.product.discount;
+				}
+			})
+		// for (let i = 0; i < selectedProduct.length; i++) {
+		// 	const singleProduct = selectedProduct[i];
+		// 	amount += singleProduct.Price;
+		// 	if (singleProduct.discount) {
+		// 	discountAmount += singleProduct.discount;
+		// 	}
+		// }
+		}
+		totalAmount = amount - discountAmount;
+		setAmount({
+		amount: amount,
+		discount: discountAmount,
+		totalAmount: totalAmount,
+		});
+	}, [selectedProduct]);
+	
+	const removeFromCart=(id ,index)=>{
+		// const filterItem=selectedProduct.filter((prd)=>prd.ID !==id );
+		const filterItem=[];
+		selectedProduct.map((prd,i)=>{
+			if (prd.ID == id && i==index){
+				// continue
+				
+			}else{
+				filterItem.push(prd)
+			}
+		})
 		setSelectedProduct(filterItem);
 	}
 	
@@ -65,16 +126,24 @@ export default function Header () {
 		<div className={style.allitems}>
 			{
 				selectedProduct.length > 0 ?(
-					selectedProduct.map((product)=>(
+					selectedProduct.map((product,index)=>(
+						
 						console.log("seletemap",product),
 					<div className={style.cartprocontainer} key={product.product.ID}>
 					<div className={style.cartimgtitle}>
-					<div className={style.proimg}><img src={product.product.ImageSrc} className={style.img}/></div>
+					<div className={style.proimg}><img src={product.product.ImageSrc} 
+					className={style.img}/>
 					<div className={style.protitle}>{product.product.Name}</div>
 					</div>
+					<div className={style.prices}>
+					<div className={style.mrp}>Price: <p className={style.frate}> {product.product?.Price} </p> TAKA</div>
+					<div className={style.seleprice}>Discount Price:<p className={style.rate}>{product.product?.Price-product.product?.discount}</p>TAKA</div>
+                <p className={style.save}>Save: {product.product?.discount} TAKA</p>
+				</div>
+					</div>
 					
-					<div className={style.prodprice}>{product?.Price}</div>
-					<button className={style.deletebtn} onClick={()=>removeFromCart(product.ID)}>
+					
+					<button className={style.deletebtn} onClick={()=>removeFromCart(product.ID,index)}>
 					<img src={deletebtn} alt="" className="max-w-[90%] max-h-[90%]" />
 					</button>
 				</div>
@@ -83,13 +152,28 @@ export default function Header () {
 					<p>No Product </p>
 				)
 			}
+			<div className="space-y-1 text-right mr-1.5">
+            <p>
+                Amount :
+                <span className="font-semibold"> {amount.amount} TAKA</span>
+            </p>
+            <p>
+                Discount :
+                <span className="font-semibold">{amount.discount} TAKA</span>
+            </p>
+            <p>
+                Total amount:
+                <span className="font-semibold">{amount.totalAmount} TAKA</span>
+            </p>
+            <p className="text-sm dark:text-gray-400">
+                Not including taxes and shipping costs
+            </p>
+            </div>
 		</div>
 		</div>
 		)
 	}
-          
-          
-      
+	
 	
 </header>
 </>

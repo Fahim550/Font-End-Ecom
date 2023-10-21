@@ -1,11 +1,11 @@
 import React from 'react'
 
 const style={
-  cartprocontainer:`flex shadow-xl m-1.5 rounded-lg p-2.5 items-center justify-center w-[900px]`,
-  cartimgtitle:`flex w-[40%]  items-center`,
+  cartprocontainer:`flex shadow-xl  m-1.5 rounded-lg p-2.5 items-center justify-center w-[900px]`,
+  cartimgtitle:`flex w-[40%]  items-center `,
   proimg:`w-[50px] h-[50px] mr-2.5`,
   img:`max-w-[100%] max-h-[100%]`,
-  protitle:`text-[22px]`,
+  protitle:`text-sm`,
   prodquantity:`flex justify-evenly bg-white pt-2.5 rounded-lg border-2 border-solid border-yellow-400 w-[120px]`,
   btn:`border-2 border-solid border-yellow-400 bg-white bg-white text-yellow-400 w-[30px] h-[30px] rounded-3xl `,
   prodprice:`w-[20%] flex justify-right text-[20px] text-lime-500 ml-[50px]`,

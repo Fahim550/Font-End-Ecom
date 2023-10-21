@@ -10,7 +10,7 @@ const style={
     title:`text-[15px] font-semibold p-1 no-underline`,
     price:`flex ml-1 p-0 flex-col`,
     mrp:`flex m-0 p-1.5`,
-    seleprice:`flex m-0 p-1.5`,
+    seleprice:`flex m-0 p-1.5 font-semibold`,
     save:`flex m-0 p-1 text-lg`,
     frate:`flex m-0  text-red-500 line-through`,
     rate:`text-lime-500 ml-1.5 border-1 border-solid`,
@@ -44,9 +44,9 @@ export default function ProductCard(product) {
               <p className={style.title}>{p?.Name} </p>
               {/* </a>  */}
             <div className={style.price}>
-                <div className={style.mrp}>TAKA: <p className={style.frate}>{mrp}</p> </div>
-                <div className={style.seleprice}>Discount Price: <p className={style.rate}>{product.product.Price}</p> </div>
-                <p className={style.save}>Discount Price: {Discount}</p>
+                <div className={style.mrp}>Price: <p className={style.frate}>{product.product.Price} TAKA</p> </div>
+                <div className={style.seleprice}>Discount Price: <p className={style.rate}>{product.product.Price-product.product.discount} </p> TAKA</div>
+                <p className={style.save}>Save: {product.product.discount} TAKA</p>
             </div> 
             {/* <a href={`/product/${p.productType}/${p.id}`} className={style.buycart}> */}
                 <button className={style.btn} onClick={()=> addToCart(product)}>Add to cart</button>
