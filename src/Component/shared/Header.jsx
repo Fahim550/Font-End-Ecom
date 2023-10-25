@@ -4,6 +4,7 @@ import cart from "../../assets/photo/cart.png"
 import { ProductArray } from '../../App'
 import deletebtn from '../../assets/photo/deletebtn.jpeg'
 import { products } from '../data/Data';
+import { Link } from 'react-router-dom'
 
 
 const style={
@@ -40,7 +41,7 @@ export default function Header () {
     // const Discount=mrp-seleprice
 	
 	const [selectedProduct,setSelectedProduct]=useContext(ProductArray);
-	console.log("head",selectedProduct);
+	console.log("head😒😒😒",selectedProduct);
 	const [visibleModal,setVisibleModal]=useState(false)
 
 	const [amount, setAmount] = useState({
@@ -98,7 +99,9 @@ export default function Header () {
 	<div className="container flex justify-between h-16 mx-auto">
 			<a href="" className=''> <img src={logo} className='w-24 -mt-4' alt="logo" /></a>
 		<ul className="items-stretch hidden space-x-3 lg:flex">
-			
+		<li className="flex" >
+				<Link to='/home' className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent">Home</Link>
+			</li>
 			<li className="flex">
 				<a rel="noopener noreferrer" href="#" className="flex items-center px-4 -mb-1 border-b-2 dark:border-transparent dark:text-violet-400 dark:border-violet-400">
 					<img src={cart} className='w-16' alt="" />{selectedProduct.length >0?selectedProduct.length :0}</a>
@@ -109,8 +112,8 @@ export default function Header () {
 			
 		</ul>
 		<div className="items-center flex-shrink-0 hidden lg:flex">
-			<button className="self-center px-8 py-3 rounded">Sign in</button>
-			<button className="self-center px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-gray-900">Sign up</button>
+		<Link to="/signin"><button className="self-center px-8 py-3 rounded">Sign in</button> </Link>
+		<Link to="/login">	<button className="self-center px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-gray-900">Sign up</button></Link> 
 		</div>
 		<button className="p-4 lg:hidden">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 dark:text-gray-100">
